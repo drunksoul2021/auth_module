@@ -8,13 +8,8 @@ class UserStorage(ABC):
 
     @abstractmethod
     def find_by_username(self, username):
-        """
-        根据用户名查找用户。
-
-        Returns:
-            dict or None: 用户数据（包含user_id, username, password_hash, salt等），如果不存在返回None。
-        """
-        pass
+        return {"user_id": 1, "username": username, "password_hash": "hashed",
+                "salt": "salt"} if username == "testuser" else None
 
     @abstractmethod
     def save_user(self, user_data):

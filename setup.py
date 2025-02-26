@@ -13,7 +13,8 @@ setup(
     install_requires=[
         "pyjwt==2.8.0",
         "python-dotenv==1.0.0",
-        "argon2-cffi==23.1.0"
+        "argon2-cffi==23.1.0",
+        # "pytest"  # 仅用于开发，可不添加到正式依赖
     ],
     python_requires=">=3.8",
     classifiers=[

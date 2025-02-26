@@ -27,17 +27,26 @@ class AuthController:
         self.user_service = UserService(user_storage, verify_storage, self.config)
 
     def register(self, username, password):
-        """
-        注册接口。
-
-        Returns:
-            dict: 响应数据。
-        """
+        """注册接口。"""
         if not self.user_service:
             return {'code': 500, 'message': '存储未初始化', 'data': None}
         try:
             user = self.user_service.register(username, password)
-            return {'code': 200, 'message': '注册成功', 'data': {'username': user['username']}}
+            # 打印调试信息，确认数据包含user_id
+            print(f"DEBUG - user数据: {user}")
+            print(f"DEBUG - user是否包含user_id: {'user_id' in user}")
+
+            response = {
+                'code': 200,
+                'message': '注册成功',
+                'data': {
+                    'username': user['username'],
+                    'user_id': user['user_id']  # 确保包含user_id
+                }
+            }
+            # 打印返回的响应
+            print(f"DEBUG - 返回的响应: {response}")
+            return response
         except ValueError as e:
             return {'code': 400, 'message': str(e), 'data': None}
 

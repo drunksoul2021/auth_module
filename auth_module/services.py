@@ -29,7 +29,7 @@ class UserService:
             password (str): 明文密码。
 
         Returns:
-            dict: 用户数据。
+            dict: 用户数据（包含 user_id）。
 
         Raises:
             ValueError: 用户已存在或其他错误。
@@ -44,11 +44,14 @@ class UserService:
             'username': username,
             'password_hash': password_hash,
             'salt': salt,
-            'status': 1,  # 正常状态
+            'status': 1,
             'create_time': datetime.now(),
         }
-        self.user_storage.save_user(user_data)
-        return user_data
+        saved_user = self.user_storage.save_user(user_data)
+        if 'user_id' not in saved_user:
+            raise ValueError("注册失败，用户ID缺失")
+        print(f"注册返回的用户数据: {saved_user}")  # 添加调试打印
+        return saved_user
 
     def login(self, username, password, ip):
         """
@@ -66,9 +69,16 @@ class UserService:
             ValueError: 用户名或密码错误。
         """
         user = self.user_storage.find_by_username(username)
-        if not user or not verify_password(password, user['password_hash'], user['salt']):
-            self.user_storage.log_login(user['user_id'] if user else None, 'password', ip, 0, "用户名或密码错误")
+        if not user:
+            self.user_storage.log_login(None, 'password', ip, 0, "用户名或密码错误")
             raise ValueError("用户名或密码错误")
+
+        if not verify_password(password, user['password_hash'], user['salt']):
+            self.user_storage.log_login(user['user_id'], 'password', ip, 0, "用户名或密码错误")
+            raise ValueError("用户名或密码错误")
+
+        if 'user_id' not in user:
+            raise ValueError("用户数据缺失user_id")
 
         token = generate_jwt(user['user_id'], self.config['jwt_secret'], self.config['jwt_expires'])
         self.user_storage.update_user(user['user_id'], {'last_login_time': datetime.now(), 'last_login_ip': ip})
