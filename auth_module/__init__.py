@@ -7,4 +7,4 @@ def init_auth(config_path=None):
     return AuthController(config)
 
 __version__ = "0.1.0"
-__all__ = ['init_auth']
+__all__ = ['init_auth']  # 确保明确导出 init_auth
