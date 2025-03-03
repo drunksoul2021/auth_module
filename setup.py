@@ -3,12 +3,12 @@ from setuptools import setup, find_packages
 setup(
     name="auth_module",
     version="0.1.0",
-    author="Your Name",
-    author_email="your.email@example.com",
+    author="Wesley",
+    author_email="drunksoul2023@gmail.com",
     description="A reusable authentication module for Python applications",
     long_description=open("README.md", "r", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/auth_module",
+    url="https://github.com/drunksoul2021/auth_module",
     packages=find_packages(),
     install_requires=[
         "pyjwt==2.8.0",
