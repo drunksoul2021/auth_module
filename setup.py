@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="auth_module",
-    version="0.1.0",
+    version="0.2.0",
     author="Wesley",
     author_email="drunksoul2023@gmail.com",
     description="A reusable authentication module for Python applications",

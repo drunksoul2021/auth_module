@@ -7,9 +7,17 @@ class UserStorage(ABC):
     """
 
     @abstractmethod
-    def find_by_username(self, username):
-        return {"user_id": 1, "username": username, "password_hash": "hashed",
-                "salt": "salt"} if username == "testuser" else None
+    def find_by_email(self, email):
+        """
+        根据邮箱查找用户。
+
+        Args:
+            email (str): 用户邮箱。
+
+        Returns:
+            dict or None: 用户数据，如果不存在返回None。
+        """
+        pass
 
     @abstractmethod
     def save_user(self, user_data):

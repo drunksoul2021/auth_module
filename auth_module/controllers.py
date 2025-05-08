@@ -26,33 +26,26 @@ class AuthController:
         """
         self.user_service = UserService(user_storage, verify_storage, self.config)
 
-    def register(self, username, password):
-        """注册接口。"""
+    def register(self, email, password):
+        """注册接口，使用邮箱。"""
         if not self.user_service:
             return {'code': 500, 'message': '存储未初始化', 'data': None}
         try:
-            user = self.user_service.register(username, password)
-            # 打印调试信息，确认数据包含user_id
-            print(f"DEBUG - user数据: {user}")
-            print(f"DEBUG - user是否包含user_id: {'user_id' in user}")
-
-            response = {
+            user = self.user_service.register(email, password)
+            return {
                 'code': 200,
                 'message': '注册成功',
                 'data': {
-                    'username': user['username'],
-                    'user_id': user['user_id']  # 确保包含user_id
+                    'email': user['email'],
+                    'user_id': user['user_id']
                 }
             }
-            # 打印返回的响应
-            print(f"DEBUG - 返回的响应: {response}")
-            return response
         except ValueError as e:
             return {'code': 400, 'message': str(e), 'data': None}
 
-    def login(self, username, password, ip='127.0.0.1'):
+    def login(self, email, password, ip='127.0.0.1'):
         """
-        登录接口。
+        登录接口，使用邮箱。
 
         Returns:
             dict: 响应数据。
@@ -60,7 +53,7 @@ class AuthController:
         if not self.user_service:
             return {'code': 500, 'message': '存储未初始化', 'data': None}
         try:
-            token = self.user_service.login(username, password, ip)
+            token = self.user_service.login(email, password, ip)
             return {'code': 200, 'message': '登录成功', 'data': {'token': token}}
         except ValueError as e:
             return {'code': 401, 'message': str(e), 'data': None}
